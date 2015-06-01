@@ -1,39 +1,39 @@
 <!doctype html>
 <html>
+
 <head>
-<title>demo1</title>
-<meta charset="utf-8">
-</head>
+  <title>demo1</title>
+  <meta charset="utf-8"> </head>
+
 <body>
-    <script>
+  <script>
     function fn(array) {
-  if (arguments.length > 1) {
-    return false
-  }
-  array = array.constructor !== Array ? [array] : array
-  var len = array.length,
-    i = 0,
-    sum = 0
-  for (; i < len; i++) {
-    var item = array[i]
-    if (typeof item === 'number') {
-      sum += item
-    }
-    else {
-      //console.log('jamesanthony')
-      sum += fn(function(item) {
-        var j = 0
-        for (; j < item.length; j++) {
-          if (typeof item[j] !== 'number') {
-            item.splice(j, 1)
-          }
+      if(arguments.length > 1) {
+        return false
+      }
+      array = array.constructor !== Array ? [array] : array
+      var len = array.length,
+        i = 0,
+        sum = 0
+      for(; i < len; i++) {
+        var item = array[i]
+        if(typeof item === 'number') {
+          sum += item
+        } else {
+          sum += fn(function(item) {
+            var j = 0
+            for(; j < item.length; j++) {
+              if(typeof item[j] !== 'number') {
+                item.splice(j, 1)
+              }
+            }
+            return item
+          }(item))
         }
-        return item
-      }(item))
+      }
+      return sum
     }
-  }
-  return sum
-}
-    </script>
+  </script>
 </body>
+
 </html>
