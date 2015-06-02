@@ -8,35 +8,40 @@
 <body>
   <script>
     function totalArrayNumber(array) {
-      if(arguments.length > 1 || array === null || array === undefined) {
-        return false
-      }
-      array = array.constructor !== Array ? [array] : array
-      var len = array.length,
-        i = 0,
-        sum = 0
-      for(; i < len; i++) {
-        var item = array[i]
-        sum += (typeof item === 'number' ? item : 0)
-        if(item === null || item === undefined) {
-          continue
-        } else if(item.constructor === Array) {
-          sum += totalArrayNumber(remove(item))
-        }
-      }
-      return sum
+  if(arguments.length > 1 || array === null || array === undefined) {
+    return false
+  }
+  array = array.constructor !== Array ? [array] : array
+  var len = array.length,
+    i = 0,
+    sum = 0
+  for(; i < len; i++) {
+    var item = array[i]
+    sum += (typeof item === 'number' ? item : 0)
+    if(item === null || item === undefined) {
+      continue
     }
+    else if(item.constructor === Array) {
+      sum += totalArrayNumber(remove(item))
+    }
+  }
+  return sum
+}
 
-    function remove(item) {
-      var j = 0
-      for(; j < item.length; j++) {
-        if(typeof item[j] !== 'number') {
-          item.splice(j, 1)
-        }
-      }
-      return item
+function remove(item) {
+  var j = 0
+  for(; j < item.length; j++) {
+    if(typeof item[j] !== 'number') {
+      item.splice(j, 1)
     }
-    console.log(totalArrayNumber([null, ['adobe', 30, 40, 50], 30]))
+  }
+  return item
+}
+console.log(totalArrayNumber(
+  [null, [30, 40, {}],
+  ['adobe',{},false], 30
+]
+))
   </script>
 </body>
 
