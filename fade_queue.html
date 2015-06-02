@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>fade queue</title>
+  <meta charset="utf-8"> </head>
+
+<body>
+  <script>
+    ;(function() {
+      function fade() {
+        var timer = null;
+        var args = [].slice.call(arguments);
+        var el = args.shift(),
+          bool = args.shift(),
+          callback = args.shift()
+        var opa = bool ? 0 : 1;
+        var end;
+        return function() {
+          if(opa > 1) end = opa = 1;
+          if(opa < 0) end = opa = 0;
+          el.style.opacity = opa;
+          opa = bool ? opa + .1 : opa - .1;
+          if(~~el.style.opacity === end) setTimeout(function() {
+            callback && callback()
+          }, 10)
+          else timer = setTimeout(arguments.callee, 50);
+        }()
+      }
+      var elem = document.querySelectorAll('li')
+      setTimeout(function() {
+        [].forEach.call(elem, function(el, i) {
+          setTimeout(function() {
+            fade(el, 1, function() {
+              if(i === 4) alert('ok');
+            });
+          }, i * 500);
+        });
+      }, 1000);
+    })();
+  </script>
+</body>
+
+</html>
