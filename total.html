@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
+
 <head>
   <title>demo1</title>
   <meta charset="utf-8"> </head>
+
 <body>
   <script>
-    function fn(array) {
-      if(arguments.length > 1) {
+    function totalArrayNumber(array) {
+      if(arguments.length > 1 || array === null || array === undefined) {
         return false
       }
       array = array.constructor !== Array ? [array] : array
@@ -15,23 +17,26 @@
         sum = 0
       for(; i < len; i++) {
         var item = array[i]
-        if(typeof item === 'number') {
-          sum += item
-        } else {
-          sum += fn(function(item) {
-            var j = 0
-            for(; j < item.length; j++) {
-              if(typeof item[j] !== 'number') {
-                item.splice(j, 1)
-              }
-            }
-            return item
-          }(item))
+        sum += (typeof item === 'number' ? item : 0)
+        if(item === null || item === undefined) {
+          continue
+        } else if(item.constructor === Array) {
+          sum += totalArrayNumber(remove(item))
         }
       }
       return sum
     }
-    
+
+    function remove(item) {
+      var j = 0
+      for(; j < item.length; j++) {
+        if(typeof item[j] !== 'number') {
+          item.splice(j, 1)
+        }
+      }
+      return item
+    }
+    console.log(totalArrayNumber([null, ['adobe', 30, 40, 50], 30]))
   </script>
 </body>
 
