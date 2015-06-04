@@ -29,7 +29,6 @@
     var dynamicDom = function() {
       var body = document.body,
         rule = 'width:40%;border:2px dashed #000; background:pink',
-        prev = null,
         timer,
         $$ = function(selector) {
           var el = []
@@ -45,6 +44,7 @@
       function addItem(options) {
         options.deep = options.deep || 20
         options.delay = options.delay || 10
+        options.prev = null
         var done = !1;
         var el = document.createElement(options.tag);
         el.setAttribute('data-num', options.idx + 1)
@@ -83,11 +83,11 @@
         next = obj.nextSibling
         if(!next || next.nodeName !== el.nodeName) {
           body.insertBefore(el, next)
-          if(prev) {
-            body.removeChild(prev)
+          if(options.prev) {
+            body.removeChild(options.prev)
           }
           next = obj.nextSibling
-          prev = next
+          options.prev = next
         }
         else {
           next = obj.nextSibling
