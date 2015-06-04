@@ -26,89 +26,90 @@
 
 <body>
   <script>
-var dynamicDom = function() {
-  var body = document.body,
-    rule = 'width:40%;border:2px dashed #000; background:pink',
-    prev = null,
-    timer,
-    $$ = function(selector) {
-      var el = []
-      if(document.querySelectorAll) {
-        el = document.querySelectorAll(selector)
-      }
-      else if(document.getElementsByTagName) {
-        el = document.getElementsByTagName(selector)
-      }
-      return el
-    };
+    var dynamicDom = function() {
+      var body = document.body,
+        rule = 'width:40%;border:2px dashed #000; background:pink',
+        prev = null,
+        timer,
+        $$ = function(selector) {
+          var el = []
+          if(document.querySelectorAll) {
+            el = document.querySelectorAll(selector)
+          }
+          else if(document.getElementsByTagName) {
+            el = document.getElementsByTagName(selector)
+          }
+          return el
+        };
 
-  function addItem(options) {
-    options.deep = options.deep || 20
-    options.delay = options.delay || 10
-    var done = !1;
-    var el = document.createElement(options.tag);
-    el.setAttribute('data-num', options.idx + 1)
-    el.innerHTML = ++options.idx
-    body.appendChild(el);
-    if(!done && options.idx < options.deep) {
-      timer = setTimeout(function() {
-        addItem(options, options.deep)
-      }, options.delay)
-    }
-    else {
-      done = !done;
-      clearTimeout(timer)
-      timer = null;
-      var div = $$(options.div)
-      handle(options, div);
-    }
-    return this
-  }
-
-  function handle(options, div) {
-    document.body.onclick = function(e) {
-      var target = e.target
-      var num = +target.getAttribute('data-num') - 1
-      if(target === div[num]) {
-        clickHandler(options, target, num)
+      function addItem(options) {
+        options.deep = options.deep || 20
+        options.delay = options.delay || 10
+        var done = !1;
+        var el = document.createElement(options.tag);
+        el.setAttribute('data-num', options.idx + 1)
+        el.innerHTML = ++options.idx
+        body.appendChild(el);
+        if(!done && options.idx < options.deep) {
+          timer = setTimeout(function() {
+            addItem(options, options.deep)
+          }, options.delay)
+        }
+        else {
+          done = !done;
+          clearTimeout(timer)
+          timer = null;
+          var div = $$(options.div)
+          handle(options, div);
+        }
+        return this
       }
-    }
-  }
 
-  function clickHandler(options, obj, idx) {
-    var next
-    var el = document.createElement(options.subtag)
-    el.style.cssText = rule
-    el.innerHTML = (idx + 1) + ' content'
-    if(!obj.nextSibling || obj.nextSibling.nodeName !== el.nodeName) {
-      body.insertBefore(el, obj.nextSibling)
-      if(prev) {
-        body.removeChild(prev)
+      function handle(options, div) {
+        document.body.onclick = function(e) {
+          var target = e.target
+          var num = +target.getAttribute('data-num') - 1
+          if(target === div[num]) {
+            clickHandler(options, target, num)
+          }
+        }
       }
-      next = obj.nextSibling
-      prev = next
-    }
-    else {
-      next = obj.nextSibling
-      toggle(next)
-    }
-  }
 
-  function toggle(el) {
-    var display = el.style.display
-    el.style.display = display !== 'none' ? 'none' : ''
-  }
-  return {
-    addItem: addItem
-  }
-}()
-dynamicDom.addItem({
-  tag: 'div',
-  subtag: 'p',
-  div: 'div',
-  delay: 30,
-  idx: 0
-})
+      function clickHandler(options, obj, idx) {
+        var next
+        var el = document.createElement(options.subtag)
+        el.style.cssText = rule
+        el.innerHTML = (idx + 1) + ' content'
+        next = obj.nextSibling
+        if(!next || next.nodeName !== el.nodeName) {
+          body.insertBefore(el, next)
+          if(prev) {
+            body.removeChild(prev)
+          }
+          next = obj.nextSibling
+          prev = next
+        }
+        else {
+          next = obj.nextSibling
+          toggle(next)
+        }
+      }
+
+      function toggle(el) {
+        var display = el.style.display
+        el.style.display = display !== 'none' ? 'none' : ''
+      }
+      return {
+        addItem: addItem
+      }
+    }()
+    dynamicDom.addItem({
+      tag: 'div',
+      subtag: 'p',
+      div: 'div',
+      delay: 30,
+      idx: 0
+    })
   </script>
 </body>
 
