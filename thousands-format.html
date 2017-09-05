@@ -8,18 +8,18 @@
 <body>
   <script>
     function toThousands(str, delta, $) {
-      var dec = str.toString().match(/(\.\d*$)/)[0];
-      str = typeof str === 'number' ? str.toFixed() : str;
-      var result = [];
-      var len = str.length;
-      if(len <= delta) {
-        return str;
-      }
-      while(len) {
-        result.push(str.substring(len - delta, len));
+			var dec = ''
+			var str = str.split('.')
+			var result = []
+      var len = str[0].length
+     	str[1] && (dec = '.'+str[1])
+      if(len <= delta)
+        return str[0]
+      while(len > 0) {
+        result.push(str[0].substring(len - delta, len));
         len -= delta;
       }
-      return($ ? $ : '') + result.reverse().join(',') + dec;
+      return($ ? $ : '') + result.reverse().join(',')+dec
     }
   </script>
 </body>
