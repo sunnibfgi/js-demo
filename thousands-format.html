@@ -15,7 +15,7 @@
       if(len <= delta) {
         return str;
       }
-      while(len > 0) {
+      while(len) {
         result.push(str.substring(len - delta, len));
         len -= delta;
       }
