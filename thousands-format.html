@@ -15,7 +15,7 @@
      	str[1] && (dec = '.'+str[1])
       if(len <= delta)
         return str[0]
-      while(len > 0) {
+      while(len) {
         result.push(str[0].substring(len - delta, len));
         len -= delta;
       }
